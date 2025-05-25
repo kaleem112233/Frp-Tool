@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samsung Frp  Online Tool Via IMEI | Professional Unlock Service</title>
+    <style>
+        :root {
+            --primary: #0A5FED;
+            --primary-dark: #0039A6;
+            --secondary: #00C1D4;
+            --success: #00B16A;
+            --danger: #FF4444;
+            --warning: #FFC107;
+            --dark: #2D3748;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --bg-color: #F8FAFC;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Auth Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border: none;
+            background: var(--bg-color);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            background: var(--light-gray);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .input-with-icon input {
+            padding-left: 3rem !important;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: var(--bg-color);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(10,95,237,0.1);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 0.95rem;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(10, 95, 237, 0.1);
+        }
+
+        .btn-block {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            margin-top: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(10,95,237,0.2);
+        }
+
+        .social-login {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .social-login-text {
+            position: relative;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .social-login-text::before,
+        .social-login-text::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: var(--light-gray);
+        }
+
+        .social-login-text::before {
+            left: 0;
+        }
+
+        .social-login-text::after {
+            right: 0;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            background: var(--bg-color);
+        }
+
+        .social-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* User Info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        .user-credits {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .user-credits i {
+            color: var(--warning);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            height: fit-content;
+        }
+
+        .user-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .sidebar-user-info {
+            text-align: center;
+        }
+
+        .sidebar-user-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-user-info p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .credits {
+            background-color: var(--light-gray);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .credits-label {
+            font-size: 0.85rem;
+            color: var (--gray);
+            margin-bottom: 0.25rem;
+        }
+
+        .credits-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .buy-credits {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            color: var (--dark);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--light-gray);
+            color: var(--primary);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        /* Tool Section */
+        .tool-section {
+            background: white;
+            border-radius: var (--border-radius);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+        }
+
+        .tool-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-card {
+            background: white;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(10, 95, 237, 0.05);
+        }
+
+        .option-icon {
+            font-size: 2rem;
+            color: var (--primary);
+            margin-bottom: 1rem;
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-desc {
+            font-size: 0.85rem;
+            color: var (--gray);
+        }
+
+        /* Results Section */
+        .results-container {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .result-line {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-line i {
+            font-size: 0.8rem;
+        }
+
+        .text-success {
+            color: var(--success);
+        }
+
+        .text-warning {
+            color: var(--warning);
+        }
+
+        .text-danger {
+            color: var(--danger);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 1.5rem 0;
+            display: none;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Timer */
+        .timer {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-link {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .footer-link a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--light-gray);
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .auth-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .tool-options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .tool-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            
+            <!-- Logo Section -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h2 style="color: var(--dark); font-size: 1.8rem; font-weight: 600;">Welcome Back</h2>
+                <p style="color: var(--gray); font-size: 0.95rem;">Login to access premium FRP removal tools</p>
+            </div>
+
+            <!-- Auth Tabs -->
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="loginTab">Login</div>
+                <div class="auth-tab" id="registerTab">Register</div>
+            </div>
+            
+            <!-- Login Form -->
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" style="width: 16px; height: 16px;">
+                        <span style="color: var(--gray); font-size: 0.9rem;">Remember me</span>
+                    </label>
+                    <a href="#" style="color: var(--primary); text-decoration: none; font-size: 0.9rem;">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login to Account
+                </button>
+            </form>
+
+            <!-- Social Login -->
+            <div class="social-login">
+                <div class="social-login-text">Or continue with</div>
+                <div class="social-buttons">
+                    <button class="social-btn">
+                        <i class="fab fa-google" style="color: #DB4437;"></i>
+                    </button>
+                    <button class="social-btn">
+                        <i class="fab fa-facebook-f" style="color: #4267B2;"></i>
+                    </button>
+                    <button class="social-btn">
+                        <i class="fab fa-apple" style="color: #000000;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="appContent" style="display:none;">
+        <!-- Yahan se aapka pura container, header, sidebar, main, footer waghera -->
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-mobile-alt" style="font-size: 2rem;"></i>
+                    <div class="logo-text">
+                        <h1>Samsung Frp  Online Tool Via IMEI</h1>
+                        <p>Professional tool for removing FRP restrictions</p>
+                    </div>
+                </div>
+                
+                <div id="authButtons" class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                    <button class="btn btn-primary" id="registerBtn">
+                        <i class="fas fa-user-plus"></i>
+                        Register
+                    </button>
+                </div>
+                
+                <div id="userProfile" class="user-info" style="display: none;">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div>
+                        <div class="user-name" id="userName">User</div>
+                        <div class="user-credits">
+                            <i class="fas fa-coins"></i>
+                            <span id="userCreditBalance">0</span> credits
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="main-content">
+                <aside class="sidebar" id="sidebar" style="display: none;">
+                    <div class="user-profile">
+                        <div class="avatar" id="sidebarAvatar">
+                            U
+                        </div>
+                        <div class="sidebar-user-info">
+                            <h3 id="sidebarUserName">User</h3>
+                            <p id="sidebarUserEmail">user@example.com</p>
+                        </div>
+                    </div>
+
+                    <div class="credits">
+                        <div class="credits-label">Available Credits</div>
+                        <div class="credits-amount" id="sidebarCredits">0</div>
+                    </div>
+                    
+                    <button class="btn btn-primary buy-credits" id="buyCreditsBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        Buy Credits
+                    </button>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="fas fa-home"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-unlock"></i>
+                                FRP Removal
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" id="historyLink">
+                                <i class="fas fa-history"></i>
+                                History
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </aside>
+
+                <main>
+                    <section class="tool-section">
+                        <div class="section-header">
+                            <div>
+                                <h2 class="section-title">FRP Removal Tool</h2>
+                                <p class="section-subtitle">Select your preferred removal method below</p>
+                            </div>
+                        </div>
+
+                        <div class="tool-options">
+                            <div class="option-card" data-method="imei">
+                                <div class="option-icon">
+                                    <i class="fas fa-hashtag"></i>
+                                </div>
+                                <h4 class="option-title">Via IMEI V1</h4>
+                                <p class="option-desc">Server-based IMEI removal (Recommended)</p>
+                                <div class="option-price">21 credits</div>
+                                <!-- IMEI & Model Form -->
+                                <form id="imeiForm">
+                                    <input type="text" id="imeiInput" placeholder="Enter IMEI" maxlength="15" required style="margin:8px 0;width:100%;padding:8px;">
+                                    <input type="text" id="modelInput" placeholder="Enter Model" required style="margin:8px 0;width:100%;padding:8px;">
+                                    <button type="submit" class="btn btn-primary" style="width:100%;">Submit IMEI</button>
+                                </form>
+                            </div>
+
+                            <div class="option-card" data-method="usb">
+                                <div class="option-icon">
+                                    <i class="fas fa-usb"></i>
+                                </div>
+                                <h4 class="option-title">Via USB Your IP</h4>
+                                <p class="option-desc">Requires USB connection to computer</p>
+                                <div class="option-price">3 credits</div>
+                                <!-- IMEI & Model Form for USB -->
+                                <form id="usbForm">
+                                    <input type="text" id="usbImeiInput" placeholder="Enter IMEI" maxlength="15" required style="margin:8px 0;width:100%;padding:8px;">
+                                    <input type="text" id="usbModelInput" placeholder="Enter Model" required style="margin:8px 0;width:100%;padding:8px;">
+                                    <button type="submit" class="btn btn-primary" style="width:100%;">Submit IMEI</button>
+                                </form>
+                            </div>
+
+                            <div class="option-card" data-method="server">
+                                <div class="option-icon">
+                                    <i class="fas fa-server"></i>
+                                </div>
+                                <h4 class="option-title">Slow Server Via IMEI V2</h4>
+                                <p class="option-desc">Advanced server-based solution</p>
+                                <div class="option-price">4 credits</div>
+                                <!-- IMEI & Model Form for Server -->
+                                <form id="serverForm">
+                                    <input type="text" id="serverImeiInput" placeholder="Enter IMEI" maxlength="15" required style="margin:8px 0;width:100%;padding:8px;">
+                                    <input type="text" id="serverModelInput" placeholder="Enter Model" required style="margin:8px 0;width:100%;padding:8px;">
+                                    <button type="submit" class="btn btn-primary" style="width:100%;">Submit IMEI</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="results-container" id="results">
+                            <div class="result-line">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>IMEI: <span id="display-imei"></span></span>
+                            </div>
+                            <div class="result-line">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>Model: <span id="display-model"></span></span>
+                            </div>
+                            <div class="result-line">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>Method: <span id="display-method"></span></span>
+                            </div>
+                            <div class="result-line">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>Send request to server... <span id="request-status">Pending</span></span>
+                            </div>
+                            <div class="result-line">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>WorkId is : <span id="work-id"></span></span>
+                            </div>
+                            <div class="result-line">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>Last request from server... <span id="unlock-status">Processing</span></span>
+                            </div>
+                            <div class="result-line">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>Security patch : <span id="security-patch"></span></span>
+                            </div>
+                            <div class="result-line">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>Status : <span id="process-status"></span></span>
+                            </div>
+                            <div class="result-line">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>Note : <span id="process-note"></span></span>
+                            </div>
+                        </div>
+
+                        <div class="progress-container" id="progress-container">
+                            <div class="progress-header">
+                                <span>Process Status</span>
+                                <span id="progress-text">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" id="progress"></div>
+                            </div>
+                            <div class="timer" id="timer">05:00</div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-primary btn-lg" id="startBtn" disabled>
+                                <i class="fas fa-play"></i>
+                                Start FRP Removal
+                            </button>
+                            <button class="btn btn-outline btn-lg" id="resetBtn">
+                                <i class="fas fa-redo"></i>
+                                Reset
+                            </button>
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+            <footer class="footer">
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">Company</a></li>
+                        <li class="footer-link"><a href="#">Our Team</a></li>
+                        <li class="footer-link"><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">Documentation</a></li>
+                        <li class="footer-link"><a href="#">API</a></li>
+                        <li class="footer-link"><a href="#">Tutorials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">Help Center</a></li>
+                        <li class="footer-link"><a href="#">Contact Us</a></li>
+                        <li class="footer-link"><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="copyright">
+                    &copy; 2025 Samsung Frp  Online Tool Via IMEI. All rights reserved. Version 2.3.0
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="modal" id="historyModal" style="display:none;">
+        <div class="modal-content" style="max-width:600px;">
+            <span class="close-modal" id="closeHistoryModal">&times;</span>
+            <h3>User History</h3>
+            <table style="width:100%;margin-top:1rem;">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>IMEI</th>
+                        <th>Model</th>
+                        <th>Method</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+// Initialize variables and elements
+let currentUser = null;
+const authModal = document.getElementById('authModal');
+const appContent = document.getElementById('appContent');
+const loginForm = document.getElementById('loginForm');
+const loginTab = document.getElementById('loginTab');
+const registerTab = document.getElementById('registerTab');
+const userProfile = document.getElementById('userProfile');
+const authButtons = document.getElementById('authButtons');
+const sidebar = document.getElementById('sidebar');
+
+// Show login modal on page load
+window.onload = function() {
+    if (!currentUser) {
+        authModal.style.display = 'flex';
+        appContent.style.display = 'none';
+    }
+};
+
+// Login form submission
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    // Basic validation
+    if (email && password) {
+        // Simulate successful login
+        currentUser = {
+            name: email.split('@')[0],
+            email: email,
+            credits: 100
+        };
+
+        // Update UI elements
+        document.getElementById('userName').textContent = currentUser.name;
+        document.getElementById('userCreditBalance').textContent = currentUser.credits;
+        document.getElementById('sidebarUserName').textContent = currentUser.name;
+        document.getElementById('sidebarUserEmail').textContent = currentUser.email;
+        document.getElementById('sidebarCredits').textContent = currentUser.credits;
+        
+        // Show app content
+        authModal.style.display = 'none';
+        appContent.style.display = 'block';
+        userProfile.style.display = 'flex';
+        sidebar.style.display = 'block';
+        authButtons.style.display = 'none';
+
+        // Clear form
+        loginForm.reset();
+    }
+});
+
+// Tab switching
+loginTab.onclick = function() {
+    loginTab.classList.add('active');
+    registerTab.classList.remove('active');
+    loginForm.style.display = 'block';
+    document.getElementById('registerForm').style.display = 'none';
+};
+
+registerTab.onclick = function() {
+    registerTab.classList.add('active');
+    loginTab.classList.remove('active');
+    loginForm.style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+};
+
+// Close modal button
+document.querySelector('.close-modal').onclick = function() {
+    authModal.style.display = 'none';
+};
+
+// Login/Register buttons
+document.getElementById('loginBtn').onclick = function() {
+    authModal.style.display = 'flex';
+    loginTab.click();
+};
+
+document.getElementById('registerBtn').onclick = function() {
+    authModal.style.display = 'flex';
+    registerTab.click();
+};
+
+// Logout functionality
+document.getElementById('logoutBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    currentUser = null;
+    appContent.style.display = 'none';
+    authModal.style.display = 'flex';
+    userProfile.style.display = 'none';
+    sidebar.style.display = 'none';
+    authButtons.style.display = 'flex';
+});
+
+// Buy credits button
+document.getElementById('buyCreditsBtn').onclick = function() {
+    window.open('https://wa.me/+270635508047?text=I%20want%20to%20buy%20credits', '_blank');
+};
+
+// Timer and Progress Variables
+let timerInterval;
+let progressInterval;
+
+// Progress bar function
+function startProgress(duration) {
+    if (progressInterval) clearInterval(progressInterval);
+
+    const progressBar = document.getElementById('progress');
+    const progressText = document.getElementById('progress-text');
+    let elapsed = 0;
+
+    function updateProgress() {
+        elapsed++;
+        let percent = Math.min(Math.round((elapsed / duration) * 100), 100);
+        progressBar.style.width = percent + '%';
+        progressText.textContent = percent + '%';
+        if (percent >= 100) {
+            clearInterval(progressInterval);
+        }
+    }
+
+    // Start from 1%
+    progressBar.style.width = '1%';
+    progressText.textContent = '1%';
+    elapsed = 1;
+    progressInterval = setInterval(updateProgress, 1000);
+}
+
+// Timer function (update this part)
+function startTimer(method) {
+    if (timerInterval) clearInterval(timerInterval);
+
+    const timerElement = document.getElementById('timer');
+    let duration = (method === 'usb') ? 600 : 300; // 600s = 10min, 300s = 5min
+    let supportedPatchShown = false;
+
+    function updateTimer() {
+        let minutes = parseInt(duration / 60, 10);
+        let seconds = parseInt(duration % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        timerElement.textContent = minutes + ":" + seconds;
+
+        // 2 min baad Security patch: Supported dikhaye
+        if (!supportedPatchShown && duration <= ((method === 'usb') ? 600 : 300) - 120) {
+            document.getElementById('security-patch').textContent = "Supported";
+            supportedPatchShown = true;
+        }
+
+        if (--duration < 0) {
+            clearInterval(timerInterval);
+            timerElement.textContent = "Thank you";
+            document.getElementById('progress').style.width = '100%';
+            document.getElementById('progress-text').textContent = '100%';
+
+            // Update all statuses on completion
+            document.getElementById('request-status').textContent = "Successful";
+            document.getElementById('unlock-status').textContent = "Complete";
+            document.getElementById('process-status').textContent = "Done";
+            document.getElementById('process-note').textContent = "You can turn off your phone and on next setup Phone Done. Enjoy!";
+        }
+    }
+
+    // Initial call
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
+
+    // Start progress bar with timer
+    startProgress((method === 'usb') ? 600 : 300);
+}
+
+// Helper: Random Work ID generator
+function generateWorkId() {
+    return 'WID-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+}
+
+// Helper: Get selected method and its credit cost
+function getSelectedMethodAndCost() {
+    // Check which form was last submitted (by checking visible results)
+    const method = document.getElementById('display-method').textContent.toLowerCase();
+    let cost = 0;
+    if (method === 'imei') cost = 21;
+    else if (method === 'usb') cost = 3;
+    else if (method === 'server') cost = 4;
+    return { method, cost };
+}
+
+// Start FRP Removal button handler
+document.getElementById('startBtn')?.addEventListener('click', function() {
+    if (!currentUser) {
+        alert("Please login first!");
+        return;
+    }
+
+    // Get method and cost
+    const { method, cost } = getSelectedMethodAndCost();
+
+    // Check credits
+    if (currentUser.credits < cost) {
+        alert("Insufficient credits!");
+        return;
+    }
+
+    // Deduct credits
+    currentUser.credits -= cost;
+    document.getElementById('userCreditBalance').textContent = currentUser.credits;
+    document.getElementById('sidebarCredits').textContent = currentUser.credits;
+
+    // Generate and show Work ID
+    const workId = generateWorkId();
+    document.getElementById('work-id').textContent = workId;
+
+    // Update status and note
+    document.getElementById('process-status').textContent = "Present Age";
+    document.getElementById('process-note').textContent = "FRP removal process started. Please wait...";
+
+    // Start 5 min timer (always 5 min on start)
+    startTimer('imei');
+
+    // Disable start button
+    this.disabled = true;
+});
+
+// Form submission handlers
+const forms = {
+    'imeiForm': 'imei',
+    'usbForm': 'usb',
+    'serverForm': 'server'
+};
+
+Object.entries(forms).forEach(([formId, method]) => {
+    document.getElementById(formId)?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show results and progress containers
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('progress-container').style.display = 'block';
+        
+        // Update display information
+        document.getElementById('display-imei').textContent = this.querySelector('input[type="text"]').value;
+        document.getElementById('display-model').textContent = this.querySelector('input[placeholder="Enter Model"]').value;
+        document.getElementById('display-method').textContent = method.toUpperCase();
+
+        // Generate and show new Work ID on every submit
+        const workId = generateWorkId();
+        document.getElementById('work-id').textContent = workId;
+        
+        // Start timer with appropriate duration
+        startTimer(method);
+        
+        // Enable start button
+        document.getElementById('startBtn').disabled = false;
+    });
+});
+
+// Reset button handler
+document.getElementById('resetBtn')?.addEventListener('click', function() {
+    // Clear timers
+    if (timerInterval) clearInterval(timerInterval);
+    if (progressInterval) clearInterval(progressInterval);
+    
+    // Reset displays
+    document.getElementById('timer').textContent = "05:00";
+    document.getElementById('progress').style.width = '0%';
+    document.getElementById('progress-text').textContent = '0%';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('progress-container').style.display = 'none';
+    
+    // Reset forms
+    Object.keys(forms).forEach(formId => {
+        document.getElementById(formId)?.reset();
+    });
+    
+    // Disable start button
+    document.getElementById('startBtn').disabled = true;
+});
+
+// MongoDB connection
+mongoose.connect('mongodb://localhost:27017/frp', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// History Schema
+const historySchema = new mongoose.Schema({
+    email: String,
+    imei: String,
+    model: String,
+    method: String,
+    date: { type: Date, default: Date.now }
+});
+const History = mongoose.model('History', historySchema);
+
+// Save history
+app.post('/api/history', async (req, res) => {
+    const { email, imei, model, method } = req.body;
+    const entry = new History({ email, imei, model, method });
+    await entry.save();
+    res.json({ success: true });
+});
+
+// Get user history
+app.get('/api/history/:email', async (req, res) => {
+    const history = await History.find({ email: req.params.email }).sort({ date: -1 });
+    res.json(history);
+});
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+</script>
+</body>
+</html>
